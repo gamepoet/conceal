@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+require 'conceal'
+require 'optparse'
+
+def main
+  OptionParser.new do |o|
+    o.banner = 'Usage: decrypt KEY_FILE'
+    o.on('-h', '--help', 'show this message') do
+      puts o
+      exit(0)
+    end
+    o.on('-v', '--version', 'print the version') do
+      puts Conceal::VERSION
+    end
+  end.parse(ARGV)
+
+  # read the key file
+  if ARGV.empty?
+    $stderr.puts "Missing KEY_FILE argument"
+    exit(1)
+  end
+  key_file = ARGV.shift
+  key = IO.read(key_file)
+
+  # decrypt from stdin
+  encrypted_data = $stdin.read
+  puts Conceal.decrypt(encrypted_data, key: key)
+end
+
+main
