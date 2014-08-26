@@ -38,14 +38,14 @@ module Conceal
       digest = OpenSSL::Digest.new('sha256')
       hmac = OpenSSL::HMAC.digest(digest, key, ciphertext)
 
-      encode64([
+      [
         FORMAT_VERSION,
         algorithm,
-        iv,
+        encode64(iv),
         salt,
-        hmac,
-        ciphertext,
-      ].join('$'))
+        encode64(hmac),
+        encode64(ciphertext),
+      ].join('$')
     end
 
     # Decrypts the given encrypted string.
@@ -58,8 +58,12 @@ module Conceal
       key = opts[:key]
       raise ArgumentError.new(':key option missing') if key.to_s.empty?
 
-      ver, algorithm, iv, salt, hmac, ciphertext = Base64.decode64(data).split('$', 6)
+      ver, algorithm, iv64, salt, hmac64, ciphertext64 = data.split('$', 6)
       raise ArgumentError.new('ciphertext has unknown version') unless ver == FORMAT_VERSION.to_s
+
+      iv         = Base64.decode64(iv64)
+      hmac       = Base64.decode64(hmac64)
+      ciphertext = Base64.decode64(ciphertext64)
 
       # validate the hmac
       digest = OpenSSL::Digest.new('sha256')
