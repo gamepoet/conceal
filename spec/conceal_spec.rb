@@ -15,5 +15,12 @@ describe Conceal do
     it 'does not return the plaintext' do
       expect(Conceal.encrypt('hello', key: key)).not_to eq('hello')
     end
+
+    it 'outputs different values each time (different iv/salt)' do
+      first  = Conceal.encrypt('hello', key: key)
+      second = Conceal.encrypt('hello', key: key)
+
+      expect(first).not_to eq(second)
+    end
   end
 end
