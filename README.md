@@ -1,6 +1,7 @@
 # Conceal
 
-Simple OpenSSL-based string encryption using a shared secret.
+Simple OpenSSL-based string encryption using a shared secret. The algorithm, initialization vector, salt, crypttext, and HMAC are all encoded into a single string
+so it is easy to copy around.
 
 ## Requirements
 
