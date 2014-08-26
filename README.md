@@ -23,9 +23,20 @@ Or install it yourself as:
 
 ## Usage
 
+This gem provides both a ruby library and some command-line utilities.
+
+### Library
+
 ```ruby
 encrypted = Conceal.encrypt('some plaintext', key: 'your shared secret', algorithm: 'aes-256-cbc')
 decrypted = Conceal.decrypt(encrypted, key: 'your shared secret')
+```
+
+### Command-line
+
+```
+$ ruby -rsecurerandom -e 'print SecureRandom.urlsafe_base64(32)' | encrypt -n key.file | pbcopy
+$ pbpaste | decrypt -n key.file | pbcopy
 ```
 
 ## Authors
