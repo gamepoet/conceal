@@ -42,7 +42,7 @@ module Conceal
         FORMAT_VERSION,
         algorithm,
         encode64(iv),
-        salt,
+        encode64(salt),
         encode64(hmac),
         encode64(ciphertext),
       ].join('$')
@@ -58,10 +58,11 @@ module Conceal
       key = opts[:key]
       raise ArgumentError.new(':key option missing') if key.to_s.empty?
 
-      ver, algorithm, iv64, salt, hmac64, ciphertext64 = data.split('$', 6)
+      ver, algorithm, iv64, salt64, hmac64, ciphertext64 = data.split('$', 6)
       raise ArgumentError.new('ciphertext has unknown version') unless ver == FORMAT_VERSION.to_s
 
       iv         = Base64.decode64(iv64)
+      salt       = Base64.decode64(salt64)
       hmac       = Base64.decode64(hmac64)
       ciphertext = Base64.decode64(ciphertext64)
 
