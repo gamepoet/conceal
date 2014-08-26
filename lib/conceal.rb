@@ -5,7 +5,8 @@ require 'securerandom'
 
 module Conceal
   class << self
-    FORMAT_VERSION = 1
+    FORMAT_VERSION  = 1
+    FIELD_SEPARATOR = ':'
 
     # Encrypts the given plaintext string.
     #
@@ -45,7 +46,7 @@ module Conceal
         encode64(salt),
         encode64(hmac),
         encode64(ciphertext),
-      ].join('$')
+      ].join(FIELD_SEPARATOR)
     end
 
     # Decrypts the given encrypted string.
@@ -58,7 +59,7 @@ module Conceal
       key = opts[:key]
       raise ArgumentError.new(':key option missing') if key.to_s.empty?
 
-      ver, algorithm, iv64, salt64, hmac64, ciphertext64 = data.split('$', 6)
+      ver, algorithm, iv64, salt64, hmac64, ciphertext64 = data.split(FIELD_SEPARATOR, 6)
       raise ArgumentError.new('ciphertext has unknown version') unless ver == FORMAT_VERSION.to_s
 
       iv         = Base64.decode64(iv64)
