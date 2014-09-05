@@ -1,7 +1,6 @@
 # Conceal
 
-Simple OpenSSL-based string encryption using a shared secret. The algorithm, initialization vector, salt, crypttext, and HMAC are all encoded into a single string
-so it is easy to copy around.
+Simple OpenSSL-based string encryption using a shared secret. The algorithm, initialization vector, salt, crypttext, and HMAC are all encoded into a single string so it is easy to copy around.
 
 ## Requirements
 
@@ -11,15 +10,21 @@ so it is easy to copy around.
 
 Add this line to your application's Gemfile:
 
-    gem 'conceal'
+```ruby
+gem 'conceal'
+```
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install conceal
+```
+$ gem install conceal
+```
 
 ## Usage
 
@@ -35,8 +40,8 @@ decrypted = Conceal.decrypt(encrypted, key: 'your shared secret')
 ### Command-line
 
 ```
-$ ruby -rsecurerandom -e 'print SecureRandom.urlsafe_base64(32)' | encrypt -n key.file | pbcopy
-$ pbpaste | decrypt -n key.file | pbcopy
+$ ruby -rsecurerandom -e 'print SecureRandom.urlsafe_base64(32)' | conceal encrypt key.file | pbcopy
+$ pbpaste | conceal decrypt key.file | pbcopy
 ```
 
 ## Authors
